@@ -29,3 +29,4 @@ C:\Users\NOLSEN\Source\Repos\SimpleLogInSystem\SimpleLogInSystem\bin\System.Web.
 C:\Users\NOLSEN\Source\Repos\SimpleLogInSystem\SimpleLogInSystem\obj\Debug\SimpleLogInSystem.csprojResolveAssemblyReference.cache
 C:\Users\NOLSEN\Source\Repos\SimpleLogInSystem\SimpleLogInSystem\obj\Debug\SimpleLogInSystem.dll
 C:\Users\NOLSEN\Source\Repos\SimpleLogInSystem\SimpleLogInSystem\obj\Debug\SimpleLogInSystem.pdb
+C:\Users\NOLSEN\Source\Repos\SimpleLogInSystem\SimpleLogInSystem\bin\SimpleCrypto.dll

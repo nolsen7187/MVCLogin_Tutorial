@@ -43,7 +43,7 @@ namespace SimpleLogInSystem.Controllers
             var Crypto = new SimpleCrypto.PBKDF2();
             bool IsValid = false;
 
-            using(var db = new MainDbEntitiesContext)
+            using(var db = new MainDbEntitiesContext())
             {
                 var user = db.SystemUsers.FirstOrDefault(u => u.Email == email);
 
