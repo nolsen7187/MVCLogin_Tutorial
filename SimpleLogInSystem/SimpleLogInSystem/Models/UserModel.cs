@@ -11,11 +11,13 @@ namespace SimpleLogInSystem.Models
         [Required]
         [EmailAddress]
         [StringLength(150)]
+        [Display(Name="Email address: ")]
         public string email { get; set; }
 
         [Required]
         [DataType(DataType.Password)]
         [StringLength(20, MinimumLength=6)]
+        [Display(Name="Password")]
         public string password { get; set; }
     }
 }

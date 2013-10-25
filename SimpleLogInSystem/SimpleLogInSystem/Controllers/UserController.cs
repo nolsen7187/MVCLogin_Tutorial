@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Security;
 
 namespace SimpleLogInSystem.Controllers
 {
@@ -22,9 +23,22 @@ namespace SimpleLogInSystem.Controllers
         }
 
         [HttpPost]
-        public ActionResult LogIn(SimpleLogInSystem.Models.UserModel user)
+        public ActionResult LogIn(Models.UserModel user)
         {
-            return View();
+            if (ModelState.IsValid)
+            {
+                if (IsValid(user.email, user.password))
+                {
+                    FormsAuthentication.SetAuthCookie(user.email, false);
+                    return RedirectToAction("Index", "Home");
+                }
+                else
+                {
+                    ModelState.AddModelError("", "Login data is incorrect.");
+                       
+                }
+            }
+            return View(user);
         }
         [HttpGet]
         public ActionResult Registration()
@@ -33,11 +47,41 @@ namespace SimpleLogInSystem.Controllers
         }
 
         [HttpPost]
-        public ActionResult Registration(SimpleLogInSystem.Models.UserModel user)
+        public ActionResult Registration(Models.UserModel user)
         {
-            return View();
-        }
+            if (ModelState.IsValid)
+            {
+                using (var db = new MainDbEntitiesContext())
+                {
+                    var crypto = new SimpleCrypto.PBKDF2();
 
+                    var encrpPass = crypto.Compute(user.password);
+
+                    var sysUser = db.SystemUsers.Create();
+
+                    sysUser.Email = user.email;
+                    sysUser.Password = encrpPass;
+                    sysUser.PasswordSalt = crypto.Salt;
+                    sysUser.UserId = Guid.NewGuid();
+
+                    db.SystemUsers.Add(sysUser);
+                    db.SaveChanges();
+
+                    return RedirectToAction("Index", "Home");
+
+                }
+            }
+            else
+            {
+                ModelState.AddModelError("", "Login Data is incorrect");
+            }
+            return View(user);
+        }
+        public ActionResult LogOut()
+        {
+            FormsAuthentication.SignOut();
+            return RedirectToAction("Index", "Home");
+        }
         private bool IsValid(string email, string password)
         {          
             var Crypto = new SimpleCrypto.PBKDF2();
@@ -53,7 +97,6 @@ namespace SimpleLogInSystem.Controllers
                     {
                         IsValid = true;
                     }
-
                 }
             }
 
